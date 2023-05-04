@@ -47,6 +47,7 @@ public class Main{
     }
 }
 ```
+- 결과 ==> DFT 시간 복잡도 = 1048576
 
 ```java
 import java.awt.*;
@@ -58,18 +59,19 @@ public class Main{
     public static int FFT(int N) {
         int count = 0;
         for (int i = 1; i < N; i *= 2) {
-            count += i * Math.log(i) / Math.log(2);
+            count += i * (int) (Math.log(i) / Math.log(Math.E));
         }
         return count;
     }
 
     public static void main(String[] args) {
-        int N = 1024; // FFT 크기
+        int N = 1024;
         int count = FFT(N);
-        System.out.println("FFT 시간 복잡도 = " + count);
+        System.out.println("FFT 시간 복잡도= " + count);
     }
 }
 ```
+- 결과 ==> FFT 시간 복잡도 = 5268
 
 **N 이 크면 클수록(데이터의 양이 많을수록) FFT가 월등히 빠르다.**
 
