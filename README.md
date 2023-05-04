@@ -22,16 +22,72 @@
 
 *DFT 연산을 획기적으로 줄여 효율적인 계산을 할 수 있도록 만든게 FFT(N * log N)* 
 
+- DFT와 FFT의 시간 복잡도 비교 (N=1024 일 때)
+```java
+import java.awt.*;
+import java.util.*;
+import java.util.Scanner;
+
+public class Main{
+
+    public static int DFT(int N) {
+        int count = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int N = 1024;
+        int count = DFT(N);
+        System.out.println("DFT 시간 복잡도= " + count);
+    }
+}
+```
+
+```java
+import java.awt.*;
+import java.util.*;
+import java.util.Scanner;
+
+public class Main{
+
+    public static int FFT(int N) {
+        int count = 0;
+        for (int i = 1; i < N; i *= 2) {
+            count += i * Math.log(i) / Math.log(2);
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int N = 1024; // FFT 크기
+        int count = FFT(N);
+        System.out.println("FFT 시간 복잡도 = " + count);
+    }
+}
+```
+
+**N 이 크면 클수록(데이터의 양이 많을수록) FFT가 월등히 빠르다.**
+
 ### **FFT(Fast fourier transform): 고속푸리에변환. (N * log N)**
 - DFT 빠르게 하기 위한 알고리즘, 복잡한 신호를 각각 고유한 진폭과 주파수를 가진 순수 사인파들로 분해하는 방법이다.<br>
 - sin 앞쪽 짝수 4개의 주파수와  나머지 짝수 4개의 주파수를 비교했을 때, 모든 데이터 포인트의 위치에서 두 사인파의 값이 동일하다.<br>
 sin 앞쪽 홀수 4개의 주파수와  나머지 홀수 4개의 주파수를 비교했을 때, 모든 데이터 포인트의 위치에서 두 사인파의 값은 한 사인파의 값이 다른 사인파의 음수값을 가진다=> *복소수 특성*<br> 
-따라서 앞쪽 4개의 주파수만 계산하고 곱하기 2 하면 된다.**필요한 계산횟수 절반으로 줄임**
+따라서 앞쪽 4개의 주파수만 계산하고 곱하기 2 하면 된다. **필요한 계산횟수 절반으로 줄임** 
 
+- FFT에서 중요한 것
 1. 데이터 갯수
 2. 주파수(데이터 샘플의 간격)
-3. 적분(컨볼루션)
-- 임의로 여러가지 신호를 흘려, 어떤 주파수 성분이 많이 들어있는지 알기 위함.
+3. 적분(컨볼루션)<br>
+-임의로 여러가지 신호를 흘려, 어떤 주파수 성분이 많이 들어있는지 알기 위함.
 4. 오일러 공식(결과 = 복소수)<br>
-- sin x , sin x+2ㅠ , cos x, cos x+2ㅠ 총 4 개의 주파수를 이용해서 성분의 적분값을 얻기에는 너무 복잡하다.<br>
+-sin x , sin x+2ㅠ , cos x, cos x+2ㅠ 총 4 개의 주파수를 이용해서 성분의 적분값을 얻기에는 너무 복잡하다.<br>
 그래서 이 4개를 동시에 할 수 있는 오일러 공식 e^{ix}=cos x + i*sin x 를 이용하여 좀 더 편하게 구할 수 있다. 결과값은 복소수가 나온다. (실수부는 코사인파의 진폭, 허수부는 사인파의 진폭)
+
+
+
+FFT의 실생화 예시:
